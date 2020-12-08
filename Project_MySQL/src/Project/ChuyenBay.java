@@ -11,9 +11,6 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-//import com.mysql.cj.protocol.Resultset;
-//import com.mysql.cj.xdevapi.Result;
-//import com.mysql.cj.xdevapi.Statement;
 
 public class ChuyenBay {
 	private String maCB, maMB, maSBdi, maSBden;

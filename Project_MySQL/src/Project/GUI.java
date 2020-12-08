@@ -14,17 +14,26 @@ import javax.swing.table.DefaultTableModel;
 
 public class GUI extends JFrame {
 
-	private JPanel contentPane, panel_LichBay, panel_Ve, panel_QLLB;
-	private JButton LichBay_btn, Ve_btn, QLLichBay_btn, SanBay_btn, Exit_btn, NhanVien_btn, MayBay_btn;
-	private JTable table, table_Ve;
-	private JScrollPane pane, scrollPane_Ve;
-	private DefaultTableModel model, model_Ve;
+	private JPanel contentPane, panel_LichBay, panel_Ve, panel_QLLB, panel_MB;
+	private JButton lichBay_btn, ve_btn, qllichBay_btn, sanBay_btn, exit_btn, nhanVien_btn, mayBay_btn;
+	private JTable table_LB, table_Ve, table_QLLB, table_MB;
+	private JScrollPane scrollPane_LB, scrollPane_Ve, scrollPane_QLLB, scrollPane_MB;
+	private DefaultTableModel model_LB, model_Ve, model_QLLB, model_MB;
 	private JTextField CB_Field;
 	private JTextField maVe_field;
 	private JTextField tenHK_field;
 	private JTextField passport_field;
 	private JTextField gia_field;
 	private JLabel lbl_MACB;
+	private JTextField maCB_field;
+	private JTextField maMB_field;
+	private JTextField maSBdi_field;
+	private JTextField maSBden_field;
+	private JTextField ngayBay_field;
+	private JTextField idPlane_field;
+	private JTextField type_field;
+	private JTextField airLine_field;
+	private JTextField numOfChair_field;
 	/**
 	 * Launch the application.
 	 */
@@ -55,7 +64,7 @@ public class GUI extends JFrame {
 		setContentPane(contentPane);
 		
 		
-		
+		// Label Image
 		final ImageIcon icon = new ImageIcon(GUI.class.getResource("/Project/image.png"));
         JLabel picLabel = new JLabel(icon);
         picLabel.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -71,6 +80,7 @@ public class GUI extends JFrame {
 		contentPane.setLayout(null);
 		contentPane.add(picLabel);
 		
+		// panel function
 		JPanel panel_function = new JPanel();
 		panel_function.setBorder(null);
 		panel_function.setBackground(UIManager.getColor("DesktopIcon.borderRimColor"));
@@ -78,11 +88,12 @@ public class GUI extends JFrame {
 		contentPane.add(panel_function);
 		panel_function.setLayout(null);
 		
-		LichBay_btn = new JButton("Lịch Bay");
-		LichBay_btn.setFont(new Font("Arial", Font.PLAIN, 14));
-		LichBay_btn.setBounds(19, 35, 125, 40);
-		panel_function.add(LichBay_btn);
-		LichBay_btn.addActionListener(new ActionListener() {
+		// lich bay button
+		lichBay_btn = new JButton("Lịch Bay");
+		lichBay_btn.setFont(new Font("Arial", Font.PLAIN, 14));
+		lichBay_btn.setBounds(19, 35, 125, 40);
+		panel_function.add(lichBay_btn);
+		lichBay_btn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -90,14 +101,17 @@ public class GUI extends JFrame {
 				panel_LichBay.setVisible(true);
 				panel_Ve.setVisible(false);
 				panel_QLLB.setVisible(false);
+				panel_MB.setVisible(false);
+
 			}
 		});
 		
-		Ve_btn = new JButton("Vé");
-		Ve_btn.setFont(new Font("Arial", Font.PLAIN, 14));
-		Ve_btn.setBounds(19, 96, 125, 40);
-		panel_function.add(Ve_btn);
-		Ve_btn.addActionListener(new ActionListener() {
+		// ve button
+		ve_btn = new JButton("Vé");
+		ve_btn.setFont(new Font("Arial", Font.PLAIN, 14));
+		ve_btn.setBounds(19, 96, 125, 40);
+		panel_function.add(ve_btn);
+		ve_btn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -105,57 +119,292 @@ public class GUI extends JFrame {
 				panel_LichBay.setVisible(false);
 				panel_Ve.setVisible(true);
 				panel_QLLB.setVisible(false);
+				panel_MB.setVisible(false);
+
 			}
 		});
 		
-		QLLichBay_btn = new JButton("Quản Lý Lịch Bay");
-		QLLichBay_btn.setFont(new Font("Arial", Font.PLAIN, 14));
-		QLLichBay_btn.setBounds(19, 159, 125, 40);
-		panel_function.add(QLLichBay_btn);
-		QLLichBay_btn.addActionListener(new ActionListener() {
+		// quan li lich bay button
+		qllichBay_btn = new JButton("Quản Lý Lịch Bay");
+		qllichBay_btn.setFont(new Font("Arial", Font.PLAIN, 14));
+		qllichBay_btn.setBounds(19, 159, 125, 40);
+		panel_function.add(qllichBay_btn);
+		qllichBay_btn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				panel_LichBay.setVisible(false);
 				panel_Ve.setVisible(false);
 				panel_QLLB.setVisible(true);
+				panel_MB.setVisible(false);
 			}
 		});
 		
-		SanBay_btn = new JButton("Sân Bay");
-		SanBay_btn.setFont(new Font("Arial", Font.PLAIN, 14));
-		SanBay_btn.setBounds(19, 297, 125, 40);
-		panel_function.add(SanBay_btn);
+		// san bay button
+		sanBay_btn = new JButton("Sân Bay");
+		sanBay_btn.setFont(new Font("Arial", Font.PLAIN, 14));
+		sanBay_btn.setBounds(19, 297, 125, 40);
+		panel_function.add(sanBay_btn);
 		
-		Exit_btn = new JButton("Thoát");
-		Exit_btn.setForeground(Color.RED);
-		Exit_btn.setFont(new Font("Apple Color Emoji", Font.PLAIN, 22));
-		Exit_btn.setBounds(19, 426, 125, 40);
-		panel_function.add(Exit_btn);
+		// exit button
+		exit_btn = new JButton("Thoát");
+		exit_btn.setForeground(Color.RED);
+		exit_btn.setFont(new Font("Apple Color Emoji", Font.PLAIN, 22));
+		exit_btn.setBounds(19, 426, 125, 40);
+		panel_function.add(exit_btn);
 		
-		NhanVien_btn = new JButton("Nhân Viên");
-		NhanVien_btn.setFont(new Font("Arial", Font.PLAIN, 14));
-		NhanVien_btn.setBounds(19, 360, 125, 40);
-		panel_function.add(NhanVien_btn);
+		// nhan vien button
+		nhanVien_btn = new JButton("Nhân Viên");
+		nhanVien_btn.setFont(new Font("Arial", Font.PLAIN, 14));
+		nhanVien_btn.setBounds(19, 360, 125, 40);
+		panel_function.add(nhanVien_btn);
 		
-		MayBay_btn = new JButton("Máy Bay");
-		MayBay_btn.setFont(new Font("Arial", Font.PLAIN, 14));
-		MayBay_btn.setBounds(19, 227, 125, 40);
-		panel_function.add(MayBay_btn);
+		// may bay button
+		mayBay_btn = new JButton("Máy Bay");
+		mayBay_btn.setFont(new Font("Arial", Font.PLAIN, 14));
+		mayBay_btn.setBounds(19, 227, 125, 40);
+		panel_function.add(mayBay_btn);
+		mayBay_btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				panel_LichBay.setVisible(false);
+				panel_Ve.setVisible(false);
+				panel_QLLB.setVisible(false);
+				panel_MB.setVisible(true);
+			}
+		});
 		
+		// panel may bay
+		panel_MB = new JPanel();
+		panel_MB.setBounds(170, 120, 644, 498);
+		contentPane.add(panel_MB);
+		panel_MB.setLayout(null);
+		panel_MB.setVisible(false);
+		
+		
+		JLabel lblMaMB = new JLabel("Mã Máy Bay");
+		lblMaMB.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMaMB.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		lblMaMB.setBounds(16, 11, 103, 24);
+		panel_MB.add(lblMaMB);
+		
+		JLabel lblLoai = new JLabel("Loại");
+		lblLoai.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLoai.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		lblLoai.setBounds(20, 58, 87, 24);
+		panel_MB.add(lblLoai);
+		
+		JLabel lblHang = new JLabel("Hãng");
+		lblHang.setHorizontalAlignment(SwingConstants.CENTER);
+		lblHang.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		lblHang.setBounds(19, 105, 87, 24);
+		panel_MB.add(lblHang);
+		
+		JLabel lblSoGhe = new JLabel("Số Ghế");
+		lblSoGhe.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSoGhe.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		lblSoGhe.setBounds(20, 150, 87, 24);
+		panel_MB.add(lblSoGhe);
+		
+		idPlane_field = new JTextField();
+		idPlane_field.setBounds(137, 6, 187, 33);
+		panel_MB.add(idPlane_field);
+		idPlane_field.setColumns(10);
+		
+		type_field = new JTextField();
+		type_field.setColumns(10);
+		type_field.setBounds(137, 54, 187, 33);
+		panel_MB.add(type_field);
+		
+		airLine_field = new JTextField();
+		airLine_field.setColumns(10);
+		airLine_field.setBounds(137, 101, 187, 33);
+		panel_MB.add(airLine_field);
+		
+		numOfChair_field = new JTextField();
+		numOfChair_field.setColumns(10);
+		numOfChair_field.setBounds(137, 149, 187, 33);
+		panel_MB.add(numOfChair_field);
+		
+		// check button Ma May Bay
+		JButton checkMaMB_btn = new JButton("Check");
+		checkMaMB_btn.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		checkMaMB_btn.setBounds(336, 9, 117, 29);
+		panel_MB.add(checkMaMB_btn);
+		
+		// button them may bay
+		JButton addPlane_btn = new JButton("Thêm Máy Bay");
+		addPlane_btn.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		addPlane_btn.setBounds(432, 51, 199, 35);
+		panel_MB.add(addPlane_btn);
+		
+		// button sua may bay
+		JButton modifyPlane_btn = new JButton("Sửa Máy Bay");
+		modifyPlane_btn.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		modifyPlane_btn.setBounds(429, 96, 199, 35);
+		panel_MB.add(modifyPlane_btn);
+		
+		// button xoa may bay
+		JButton deletePlane_btn = new JButton("Xoá Máy Bay");
+		deletePlane_btn.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		deletePlane_btn.setBounds(429, 138, 199, 35);
+		panel_MB.add(deletePlane_btn);
+		
+		// button reset may bay
+		JButton resetPlane_btn = new JButton("RESET");
+		resetPlane_btn.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		resetPlane_btn.setBounds(470, 183, 118, 31);
+		panel_MB.add(resetPlane_btn);
+		
+		String col_MB[] = {"Mã Máy Bay","Loại","Hãng", "Số Ghế"};  
+		
+		// table may bay
+		MayBay_Edit mb_edit = new MayBay_Edit();
+		model_MB = new DefaultTableModel(null, col_MB);
+		table_MB = new JTable(model_MB);
+		table_MB.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
+		table_MB.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		table_MB.setSurrendersFocusOnKeystroke(true);
+		for(MayBay mb : mb_edit.getListPlanes()) {
+			model_MB.addRow(new Object[] {
+					mb.getMaMB(), mb.getLoai(), mb.getHang(), mb.getSoGhe()
+			});
+		}
+		scrollPane_MB = new JScrollPane(table_MB);
+		scrollPane_MB.setBounds(0, 232, 645, 267);
+		panel_MB.add(scrollPane_MB);
+		
+		// panel quan li lich bay
 		panel_QLLB = new JPanel();
 		panel_QLLB.setBounds(170, 120, 644, 498);
 		contentPane.add(panel_QLLB);
 		panel_QLLB.setLayout(null);
 		
 		lbl_MACB = new JLabel("Mã Chuyến Bay");
-		lbl_MACB.setBounds(10, 10, 101, 18);
+		lbl_MACB.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_MACB.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		lbl_MACB.setBounds(10, 10, 120, 19);
 		panel_QLLB.add(lbl_MACB);
+		
+		maCB_field = new JTextField();
+		maCB_field.setColumns(10);
+		maCB_field.setBounds(141, 3, 192, 36);
+		panel_QLLB.add(maCB_field);
+		
+		JLabel lbl_MAMB = new JLabel("Mã Máy Bay");
+		lbl_MAMB.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_MAMB.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		lbl_MAMB.setBounds(11, 51, 120, 19);
+		panel_QLLB.add(lbl_MAMB);
+		
+		JLabel lbl_MASBdi = new JLabel("Mã Sân Bay Đi");
+		lbl_MASBdi.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_MASBdi.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		lbl_MASBdi.setBounds(10, 92, 120, 19);
+		panel_QLLB.add(lbl_MASBdi);
+		
+		JLabel lbl_MASBden = new JLabel("Mã Sân Bay Đến");
+		lbl_MASBden.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_MASBden.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		lbl_MASBden.setBounds(11, 135, 120, 19);
+		panel_QLLB.add(lbl_MASBden);
+		
+		JLabel lbl_NgayBay = new JLabel("Ngày Bay");
+		lbl_NgayBay.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_NgayBay.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		lbl_NgayBay.setBounds(9, 181, 120, 19);
+		panel_QLLB.add(lbl_NgayBay);
+		
+		maMB_field = new JTextField();
+		maMB_field.setColumns(10);
+		maMB_field.setBounds(141, 42, 192, 36);
+		panel_QLLB.add(maMB_field);
+		
+		maSBdi_field = new JTextField();
+		maSBdi_field.setColumns(10);
+		maSBdi_field.setBounds(141, 83, 192, 36);
+		panel_QLLB.add(maSBdi_field);
+		
+		maSBden_field = new JTextField();
+		maSBden_field.setColumns(10);
+		maSBden_field.setBounds(141, 128, 192, 36);
+		panel_QLLB.add(maSBden_field);
+		
+		ngayBay_field = new JTextField();
+		ngayBay_field.setColumns(10);
+		ngayBay_field.setBounds(141, 172, 192, 36);
+		panel_QLLB.add(ngayBay_field);
+		
+		// check ma chuyen bay button
+		JButton checkMaCB_btn = new JButton("Check");
+		checkMaCB_btn.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		checkMaCB_btn.setBounds(349, 10, 117, 29);
+		panel_QLLB.add(checkMaCB_btn);
+		
+		String col_QLLB[] = {"Mã Chuyến Bay","Mã Máy Bay","MãSB Đi", "MãSB Đến", "Ngày Bay"};  
+		
+		// table quan li lich bay
+		ChuyenBay_Edit cb_edit = new ChuyenBay_Edit();
+		model_QLLB = new DefaultTableModel(null, col_QLLB);
+		table_QLLB = new JTable(model_QLLB);
+		table_QLLB.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
+		table_QLLB.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		table_QLLB.setSurrendersFocusOnKeystroke(true);
+		for(ChuyenBay c : cb_edit.getListFlights()) {
+			model_QLLB.addRow(new Object[] {
+					c.getMaCB(), c.getMaMB(), c.getMaSBdi(), c.getMaSBden(), c.getNgayBay()
+			});
+		}
+		
+		scrollPane_QLLB = new JScrollPane(table_QLLB);
+		scrollPane_QLLB.setBounds(0, 230, 645, 269);
+		panel_QLLB.add(scrollPane_QLLB);
+		
+		JButton deleteFlights_btn = new JButton("Xoá Chuyến Bay");
+		deleteFlights_btn.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		deleteFlights_btn.setBounds(430, 137, 199, 35);
+		panel_QLLB.add(deleteFlights_btn);
+		
+		JButton reset_OLLB_btn = new JButton("Reset");
+		reset_OLLB_btn.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		reset_OLLB_btn.setBounds(467, 182, 117, 29);
+		panel_QLLB.add(reset_OLLB_btn);
+		
+		JButton insertFlights_btn = new JButton("Thêm Chuyến Bay");
+		insertFlights_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String maCB = maCB_field.getText();
+				String maMB = maMB_field.getText();
+				String maSBdi = maSBdi_field.getText();
+				String maSBden = maSBden_field.getText();
+				String ngayBay = ngayBay_field.getText();
+				cb_edit.insertFlight(maCB, maMB, maSBdi, maSBden, ngayBay);
+				try {
+					for(ChuyenBay c : cb_edit.getListFlights()) {
+						model_QLLB.addRow(new Object[] {
+								c.getMaCB(), c.getMaMB(), c.getMaSBdi(), c.getMaSBden(), c.getNgayBay()
+						});
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		insertFlights_btn.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		insertFlights_btn.setBounds(430, 50, 199, 35);
+		panel_QLLB.add(insertFlights_btn);
+		
+		JButton modifyFlights_btn = new JButton("Sửa Chuyến Bay");
+		modifyFlights_btn.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
+		modifyFlights_btn.setBounds(430, 93, 199, 35);
+		panel_QLLB.add(modifyFlights_btn);
 		panel_QLLB.setVisible(false);
 		
+		
+		// panel Ve
 		panel_Ve = new JPanel();
-		panel_Ve.setForeground(Color.BLACK);
-		panel_Ve.setBackground(Color.WHITE);
 		panel_Ve.setBounds(170, 120, 644, 498);
 		contentPane.add(panel_Ve);
 		panel_Ve.setLayout(null);
@@ -166,11 +415,11 @@ public class GUI extends JFrame {
 		panel_Ve.add(CB_Field);
 		CB_Field.setColumns(10);
 		
-		JLabel lblChuynBay = new JLabel("Chuyến Bay");
-		lblChuynBay.setHorizontalAlignment(SwingConstants.CENTER);
-		lblChuynBay.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
-		lblChuynBay.setBounds(6, 12, 100, 19);
-		panel_Ve.add(lblChuynBay);
+		JLabel lbl_CB = new JLabel("Chuyến Bay");
+		lbl_CB.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_CB.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		lbl_CB.setBounds(6, 12, 100, 19);
+		panel_Ve.add(lbl_CB);
 		
 		JButton check_btn = new JButton("Check");
 		check_btn.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
@@ -241,7 +490,7 @@ public class GUI extends JFrame {
 		reset_btn.setBounds(509, 206, 117, 29);
 		panel_Ve.add(reset_btn);
 		
-		
+		// table Ve
 		String col_Ve[] = {"Mã Vé","Mã Chuyến Bay","Tên Hành Khách", "Passport", "Giá Vé"};  
 		model_Ve = new DefaultTableModel(null, col_Ve);
 		table_Ve = new JTable(model_Ve);
@@ -264,31 +513,30 @@ public class GUI extends JFrame {
 		lblUSD.setBounds(335, 206, 77, 19);
 		panel_Ve.add(lblUSD);
 		
-		
+		// panel Lich Bay
 		panel_LichBay = new JPanel();
 		panel_LichBay.setBounds(170, 120, 644, 498);
 		contentPane.add(panel_LichBay);
 		panel_LichBay.setLayout(null);
 
 
-		String col[] = {"Mã Chuyến Bay","Mã Máy Bay","MãSB Đi", "MãSB Đến", "Ngày Bay"};  
-
-		ChuyenBay_Edit cb_edit = new ChuyenBay_Edit();
-		model = new DefaultTableModel(null, col);
+		String col_CB[] = {"Mã Chuyến Bay","Mã Máy Bay","MãSB Đi", "MãSB Đến", "Ngày Bay"};  
+//		ChuyenBay_Edit cb_edit = new ChuyenBay_Edit();
+		model_LB = new DefaultTableModel(null, col_CB);
 		
-		table = new JTable(model);
-		table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
-		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		table.setSurrendersFocusOnKeystroke(true);
+		table_LB = new JTable(model_LB);
+		table_LB.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
+		table_LB.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		table_LB.setSurrendersFocusOnKeystroke(true);
 		for(ChuyenBay c : cb_edit.getListFlights()) {
-			model.addRow(new Object[] {
+			model_LB.addRow(new Object[] {
 					c.getMaCB(), c.getMaMB(), c.getMaSBdi(), c.getMaSBden(), c.getNgayBay()
 			});
 		}
 
-		pane = new JScrollPane(table);
-		pane.setBounds(0, 79, 644, 420);
-		panel_LichBay.add(pane);
+		scrollPane_LB = new JScrollPane(table_LB);
+		scrollPane_LB.setBounds(0, 79, 644, 420);
+		panel_LichBay.add(scrollPane_LB);
 		
 		
 		JLabel lblLchBay = new JLabel("Lịch Bay");
@@ -299,6 +547,14 @@ public class GUI extends JFrame {
 		panel_LichBay.add(lblLchBay);
 	}
 	
+	public JPanel getPanel_QLLB() {
+		return panel_QLLB;
+	}
+
+	public void setPanel_QLLB(JPanel panel_QLLB) {
+		this.panel_QLLB = panel_QLLB;
+	}
+
 	public static Connection getConnection() {
 		Connection conn = null;
 		try {
@@ -311,70 +567,6 @@ public class GUI extends JFrame {
 			System.out.println("Ket noi khong thanh cong");
 		}
 		return conn;
-	}
-
-	public JButton getLichBay_btn() {
-		return LichBay_btn;
-	}
-
-	public void setLichBay_btn(JButton lichBay_btn) {
-		LichBay_btn = lichBay_btn;
-	}
-
-	public JButton getVe_btn() {
-		return Ve_btn;
-	}
-
-	public void setVe_btn(JButton ve_btn) {
-		Ve_btn = ve_btn;
-	}
-
-	public JButton getQLLichBay_btn() {
-		return QLLichBay_btn;
-	}
-
-	public void setQLLichBay_btn(JButton qLLichBay_btn) {
-		QLLichBay_btn = qLLichBay_btn;
-	}
-
-	public JButton getSanBay_btn() {
-		return SanBay_btn;
-	}
-
-	public void setSanBay_btn(JButton sanBay_btn) {
-		SanBay_btn = sanBay_btn;
-	}
-
-	public JButton getNhanVien_btn() {
-		return NhanVien_btn;
-	}
-
-	public void setNhanVien_btn(JButton nhanVien_btn) {
-		NhanVien_btn = nhanVien_btn;
-	}
-
-	public JButton getMayBay_btn() {
-		return MayBay_btn;
-	}
-
-	public void setMayBay_btn(JButton mayBay_btn) {
-		MayBay_btn = mayBay_btn;
-	}
-
-	public DefaultTableModel getModel() {
-		return model;
-	}
-
-	public void setModel(DefaultTableModel model) {
-		this.model = model;
-	}
-
-	public JTable getTable() {
-		return table;
-	}
-
-	public void setTable(JTable table) {
-		this.table = table;
 	}
 }
 
