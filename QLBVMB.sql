@@ -26,6 +26,8 @@ create table maybay (
     Hang varchar(40) not null,
     SoGhe int(5) not null check(SoGhe>0)
 );
+
+
 insert into maybay values('MB1', 'Boeing', 'Vietnam Airlines', 250);
 insert into maybay values('MB2', 'Airbus', 'Bamboo Airlines', 150);
 insert into maybay values('MB3', 'Boeing', 'China Airlines', 300);
@@ -40,13 +42,34 @@ insert into maybay values('MB10', 'Boeing', 'United Airlines', 280);
 create table chuyenbay (
 	MaCB varchar(15) primary key unique not null,
     MaMB varchar(15) not null,
-    MaSBdi varchar(15) not null,
-    MaSBden varchar(15) not null,
+    MaSBdi varchar(15) ,
+    MaSBden varchar(15) ,
     NgayBay date not null,
     constraint FK_MASBDI foreign key(MaSBdi) references sanbay(MaSB),
 	constraint FK_MASBDEN foreign key(MaSBden) references sanbay(MaSB),
     constraint FK_MAMB foreign key(MaMB) references maybay(MAMB)
 );
+
+ALTER TABLE chuyenbay
+    DROP FOREIGN KEY FK_MASBDI,
+    DROP FOREIGN KEY FK_MASBDEN,
+    DROP FOREIGN KEY FK_MAMB;
+ALTER TABLE chuyenbay
+    ADD CONSTRAINT FK_MASBDI
+        FOREIGN KEY (MaSBdi) 
+        REFERENCES sanbay(MaSB)
+        ON DELETE set null
+        ON UPDATE CASCADE,
+    ADD CONSTRAINT FK_MASBDEN
+        FOREIGN KEY (MaSBden) 
+        REFERENCES sanbay(MaSB)
+        ON DELETE set null
+        ON UPDATE CASCADE,
+	ADD CONSTRAINT FK_MAMB
+        FOREIGN KEY (MaMB) 
+        REFERENCES maybay(MAMB)
+        ON DELETE set null
+        ON UPDATE CASCADE;
 
 insert into chuyenbay values ('CB1', 'MB2', 'TSN','BJ', '2020/11/25');
 insert into chuyenbay values ('CB2', 'MB5', 'IC','CT', '2020/11/30');
@@ -71,13 +94,22 @@ insert into chuyenbay values ('CB20', 'MB4', 'CG','IC', '2020/05/15');
 
 create table ve (
 	MaVe varchar(15) primary key unique not null,
-    MaCB varchar(15) unique not null,
+    MaCB varchar(15) unique,
     TenHanhKhach varchar(40) not null,
     Passport varchar(15) not null,
-    GiaVe int(10) not null,check(giave>0),
+    GiaVe int(10) not null check(giave>0),
     DonViTien varchar(10) not null,
     constraint FK_MACB foreign key(MaCB) references chuyenbay(MaCB)
-); 
+);
+
+ALTER TABLE ve
+    DROP FOREIGN KEY FK_MACB ;
+ALTER TABLE ve
+    ADD CONSTRAINT FK_MACB
+        FOREIGN KEY (MaCB) 
+        REFERENCES chuyenbay(MaCB)
+        ON DELETE set null
+        ON UPDATE CASCADE;
 
 insert into ve values ('V1', 'CB1', 'Bùi Quốc Trọng', '2314509732',100, 'USD');
 insert into ve values ('V2', 'CB2', 'Dương Đăng Khoa', '2303852937', 150,'USD');
@@ -99,15 +131,29 @@ insert into ve values ('V17', 'CB17', 'Cổ Thiên Lạc', '5684918019', 205, 'U
 insert into ve values ('V18', 'CB18', 'David Beckham', '4958937591', 185 ,'USD');
 insert into ve values ('V19', 'CB19', 'Fernando Torres', '9581947501', 120 ,'USD');
 insert into ve values ('V20', 'CB20', 'Park Hang-seo', '8492039581', 110 ,'USD');
+insert into ve values ('V21', 'CB21', 'Nguyễn Chí Hoàng Minh', '3214333211', 120 ,'USD');
+insert into ve values ('V23', 'CB23', 'Lionel Messi', '3127831321', 170 ,'USD');
+delete from ve where maVe='V23';
+
 
 create table nhanvien (
 	MaNV varchar(15) primary key unique not null,
-    Ten varchar(40) not null,
+    HoTen varchar(40) not null,
     Luong int(10) not null check(Luong>0),
     NgaySinh date not null,
-    MaSB varchar(40) not null,
+    MaSB varchar(40),
     constraint FK_MaSB foreign key(MaSB) references sanbay(MaSB)
 );
+
+
+ALTER TABLE nhanvien
+    DROP FOREIGN KEY FK_MaSB;
+ALTER TABLE nhanvien
+    ADD CONSTRAINT FK_MaSB
+        FOREIGN KEY (MaSB) 
+        REFERENCES sanbay(MaSB)
+        ON DELETE set null
+        ON UPDATE CASCADE;
 
 insert into nhanvien values ('NV1', 'Dương Đăng Khoa', 1000, '1990/01/05','TSN');
 insert into nhanvien values ('NV2', 'Huỳnh Quang Nhật Hào', 1500, '1890/05/12','BJ');

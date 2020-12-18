@@ -10,26 +10,27 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-public class MayBay_Edit {
-	
-	private static ArrayList<MayBay> list;
+public class NhanVien_Edit {
+	private static ArrayList<NhanVien> list;
 
 	private Connection conn;
-	public  ArrayList<MayBay> getListPlanes() throws SQLException {
+	public  ArrayList<NhanVien> getListEmp() throws SQLException {
+		
 		list = new ArrayList<>();
-		String sql =  "Select * from MayBay";
+		String sql =  "Select * from NhanVien";
 		try {
 			conn = GUI.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				MayBay mb = new MayBay();
-				mb.setMaMB(rs.getString("MaMB"));
-				mb.setLoai(rs.getString("loai"));
-				mb.setHang(rs.getString("hang"));
-				mb.setSoGhe(rs.getInt("soGhe"));
-				list.add(mb);
+				NhanVien nv = new NhanVien();
+				nv.setMaNV(rs.getString("MaNV"));
+				nv.setHoTen(rs.getString("hoTen"));
+				nv.setLuong(rs.getInt("luong"));
+				nv.setNgaySinh(rs.getDate("NgaySinh"));
+				nv.setMaSB(rs.getString("maSB"));
+				list.add(nv);
 				
 			}
 		} catch (Exception e) {
@@ -38,10 +39,14 @@ public class MayBay_Edit {
 		}
 		conn.close();
 		return list;
+		
 	}
 	
-	public void insertPlane(String idPlane_field, String typePlane_field, String airline_field, int numOfChair_field) {
-		String sql = "call insertPlane(?, ?, ?, ?)";
+
+	public void insertEmp(String maNV_field, String hoTen_field, int luong_field,
+									String ngaySinh_field, String maSB_field) {
+		String sql = "call insertEmp(?, ?, ?, ?, ?)";
+
 		GUI gui = null;
 		try {
 			gui = new GUI();
@@ -55,50 +60,18 @@ public class MayBay_Edit {
 		try {
 			conn = GUI.getConnection();
 			CallableStatement cStmt = conn.prepareCall(sql);
-			cStmt.setString(1, idPlane_field);
-			cStmt.setString(2, typePlane_field);
-			cStmt.setString(3, airline_field);
-			cStmt.setInt(4, numOfChair_field);
-			
+			cStmt.setString(1, maNV_field);
+			cStmt.setString(2, hoTen_field);
+			cStmt.setInt(3, luong_field);
+			cStmt.setString(4, ngaySinh_field);
+			cStmt.setString(5, maSB_field);
+
 			ResultSet rs = cStmt.executeQuery();
-			JOptionPane.showMessageDialog(gui.getPanel_MB(), "Insert Succesfully!");
+			JOptionPane.showMessageDialog(gui.getPanel_NV(), "Insert Succesfully!");
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(gui.getPanel_MB(), "Insert Failed!");
-			
-		}
-		try {
-			conn.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public void deletePlane(String idPlane) {
-		String sql = "call deletePlane(?)";
-		GUI gui = null;
-		try {
-			gui = new GUI();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
-			conn = GUI.getConnection();
-			CallableStatement cStmt = conn.prepareCall(sql);
-			cStmt.setString(1, idPlane);
-	
-			ResultSet rs = cStmt.executeQuery();
-			JOptionPane.showMessageDialog(gui.getPanel_MB(), "Delete Succesfully!");
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(gui.getPanel_MB(), "Delete Failed!");
+			JOptionPane.showMessageDialog(gui.getPanel_NV(), "Insert Failed!");
 
 		}
 		try {
@@ -109,9 +82,8 @@ public class MayBay_Edit {
 		}
 	}
 	
-	public void modifyPlane(String newPlaneID, String planeID_field, String typePlane_field,
-			String airline_field, int numOfChair_field){
-		String sql = "call updatePlane(?, ?, ?, ?, ?)";
+	public void deleteEmp(String maNV) {
+		String sql = "call deleteEmp(?)";
 		GUI gui = null;
 		try {
 			gui = new GUI();
@@ -125,18 +97,15 @@ public class MayBay_Edit {
 		try {
 			conn = GUI.getConnection();
 			CallableStatement cStmt = conn.prepareCall(sql);
-			cStmt.setString(1, newPlaneID);
-			cStmt.setString(2, planeID_field);
-			cStmt.setString(3, typePlane_field);
-			cStmt.setString(4, airline_field);
-			cStmt.setInt(5, numOfChair_field);
-
+			cStmt.setString(1, maNV);
+	
 			ResultSet rs = cStmt.executeQuery();
-			JOptionPane.showMessageDialog(gui.getPanel_QLLB(), "Update Succesfully!");
+			JOptionPane.showMessageDialog(gui.getPanel_NV(), "Delete Succesfully!");
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(gui.getPanel_QLLB(), "Update Failed!");
+			JOptionPane.showMessageDialog(gui.getPanel_NV(), "Delete Failed!");
+
 		}
 		try {
 			conn.close();
@@ -146,21 +115,60 @@ public class MayBay_Edit {
 		}
 	}
 	
-	public MayBay findIDPlane(String planeID_field) {
-		MayBay m = new MayBay();
-		String sql = "call findPlaneID(?)";
+	public void modifyEmp(String maNV_field, String newMaNV, String hoTen_field, int luong_field,
+						String ngaySinh_field, String maSB_field){
+		String sql = "call updateEmp(?, ?, ?, ?, ?, ?)";
+		GUI gui = null;
+		try {
+			gui = new GUI();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			conn = GUI.getConnection();
 			CallableStatement cStmt = conn.prepareCall(sql);
-			cStmt.setString(1, planeID_field);
+			cStmt.setString(1, maNV_field);
+			cStmt.setString(2, newMaNV);
+			cStmt.setString(3, hoTen_field);
+			cStmt.setInt(4, luong_field);
+			cStmt.setString(5, ngaySinh_field);
+			cStmt.setString(6, maSB_field);
+
+			ResultSet rs = cStmt.executeQuery();
+			JOptionPane.showMessageDialog(gui.getPanel_NV(), "Update Succesfully!");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(gui.getPanel_NV(), "Update Failed!");
+		}
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public NhanVien findIDEmp(String maNV_field) {
+		NhanVien nv = new NhanVien();
+		String sql = "call findIDEmp(?)";
+		try {
+			conn = GUI.getConnection();
+			CallableStatement cStmt = conn.prepareCall(sql);
+			cStmt.setString(1, maNV_field);
 			
 
 			ResultSet rs = cStmt.executeQuery();
 			while(rs.next()) {
-				m.setMaMB(rs.getString("maMB"));
-				m.setLoai(rs.getString("loai"));
-				m.setHang(rs.getString("hang"));
-				m.setSoGhe(rs.getInt("soGhe"));
+				nv.setMaNV(rs.getString("MaNV"));
+				nv.setHoTen(rs.getString("hoTen"));
+				nv.setLuong(rs.getInt("luong"));
+				nv.setNgaySinh(rs.getDate("ngaySinh"));
+				nv.setMaSB(rs.getString("maSB"));
 			}
 
 		} catch (Exception e) {
@@ -173,6 +181,7 @@ public class MayBay_Edit {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return m;
+		return nv;
 	}
+	
 }

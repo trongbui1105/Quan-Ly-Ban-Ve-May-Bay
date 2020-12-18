@@ -10,26 +10,25 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-public class MayBay_Edit {
-	
-	private static ArrayList<MayBay> list;
+public class SanBay_Edit {
+
+	private static ArrayList<SanBay> list;
 
 	private Connection conn;
-	public  ArrayList<MayBay> getListPlanes() throws SQLException {
+	public  ArrayList<SanBay> getListAirports() throws SQLException {
 		list = new ArrayList<>();
-		String sql =  "Select * from MayBay";
+		String sql =  "Select * from SanBay";
 		try {
 			conn = GUI.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				MayBay mb = new MayBay();
-				mb.setMaMB(rs.getString("MaMB"));
-				mb.setLoai(rs.getString("loai"));
-				mb.setHang(rs.getString("hang"));
-				mb.setSoGhe(rs.getInt("soGhe"));
-				list.add(mb);
+				SanBay sb = new SanBay();
+				sb.setMaSB(rs.getString("MaSB"));
+				sb.setTenSB(rs.getString("TenSB"));
+				sb.setQuocGia(rs.getString("quocGia"));
+				list.add(sb);
 				
 			}
 		} catch (Exception e) {
@@ -40,8 +39,8 @@ public class MayBay_Edit {
 		return list;
 	}
 	
-	public void insertPlane(String idPlane_field, String typePlane_field, String airline_field, int numOfChair_field) {
-		String sql = "call insertPlane(?, ?, ?, ?)";
+	public void insertAirport(String idAirport_field, String nameOfAirport_field, String country_field) {
+		String sql = "call insertAirport(?, ?, ?)";
 		GUI gui = null;
 		try {
 			gui = new GUI();
@@ -55,17 +54,16 @@ public class MayBay_Edit {
 		try {
 			conn = GUI.getConnection();
 			CallableStatement cStmt = conn.prepareCall(sql);
-			cStmt.setString(1, idPlane_field);
-			cStmt.setString(2, typePlane_field);
-			cStmt.setString(3, airline_field);
-			cStmt.setInt(4, numOfChair_field);
+			cStmt.setString(1, idAirport_field);
+			cStmt.setString(2, nameOfAirport_field);
+			cStmt.setString(3, country_field);
 			
 			ResultSet rs = cStmt.executeQuery();
-			JOptionPane.showMessageDialog(gui.getPanel_MB(), "Insert Succesfully!");
+			JOptionPane.showMessageDialog(gui.getPanel_SanBay(), "Insert Succesfully!");
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(gui.getPanel_MB(), "Insert Failed!");
+			JOptionPane.showMessageDialog(gui.getPanel_SanBay(), "Insert Failed!");
 			
 		}
 		try {
@@ -76,8 +74,8 @@ public class MayBay_Edit {
 		}
 	}
 	
-	public void deletePlane(String idPlane) {
-		String sql = "call deletePlane(?)";
+	public void modifyAirport(String idAirport_field, String newIDAirport, String nameOfAirport_field, String country_field){
+		String sql = "call updateAirport(?, ?, ?, ?)";
 		GUI gui = null;
 		try {
 			gui = new GUI();
@@ -91,14 +89,49 @@ public class MayBay_Edit {
 		try {
 			conn = GUI.getConnection();
 			CallableStatement cStmt = conn.prepareCall(sql);
-			cStmt.setString(1, idPlane);
-	
+			cStmt.setString(1, idAirport_field);
+			cStmt.setString(2, newIDAirport);
+			cStmt.setString(3, nameOfAirport_field);
+			cStmt.setString(4, country_field);
+
 			ResultSet rs = cStmt.executeQuery();
-			JOptionPane.showMessageDialog(gui.getPanel_MB(), "Delete Succesfully!");
+			JOptionPane.showMessageDialog(gui.getPanel_SanBay(), "Update Succesfully!");
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(gui.getPanel_MB(), "Delete Failed!");
+			JOptionPane.showMessageDialog(gui.getPanel_SanBay(), "Update Failed!");
+		}
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void deleteAirport(String idAirport) {
+		String sql = "call deleteAirport(?)";
+		GUI gui = null;
+		try {
+			gui = new GUI();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			conn = GUI.getConnection();
+			CallableStatement cStmt = conn.prepareCall(sql);
+			cStmt.setString(1, idAirport);
+	
+			ResultSet rs = cStmt.executeQuery();
+			JOptionPane.showMessageDialog(gui.getPanel_SanBay(), "Delete Succesfully!");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(gui.getPanel_SanBay(), "Delete Failed!");
 
 		}
 		try {
@@ -109,58 +142,20 @@ public class MayBay_Edit {
 		}
 	}
 	
-	public void modifyPlane(String newPlaneID, String planeID_field, String typePlane_field,
-			String airline_field, int numOfChair_field){
-		String sql = "call updatePlane(?, ?, ?, ?, ?)";
-		GUI gui = null;
-		try {
-			gui = new GUI();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+	public SanBay findIDAirport(String idAirport_field) {
+		SanBay s = new SanBay();
+		String sql = "call findIDAirport(?)";
 		try {
 			conn = GUI.getConnection();
 			CallableStatement cStmt = conn.prepareCall(sql);
-			cStmt.setString(1, newPlaneID);
-			cStmt.setString(2, planeID_field);
-			cStmt.setString(3, typePlane_field);
-			cStmt.setString(4, airline_field);
-			cStmt.setInt(5, numOfChair_field);
-
-			ResultSet rs = cStmt.executeQuery();
-			JOptionPane.showMessageDialog(gui.getPanel_QLLB(), "Update Succesfully!");
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(gui.getPanel_QLLB(), "Update Failed!");
-		}
-		try {
-			conn.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public MayBay findIDPlane(String planeID_field) {
-		MayBay m = new MayBay();
-		String sql = "call findPlaneID(?)";
-		try {
-			conn = GUI.getConnection();
-			CallableStatement cStmt = conn.prepareCall(sql);
-			cStmt.setString(1, planeID_field);
+			cStmt.setString(1, idAirport_field);
 			
 
 			ResultSet rs = cStmt.executeQuery();
 			while(rs.next()) {
-				m.setMaMB(rs.getString("maMB"));
-				m.setLoai(rs.getString("loai"));
-				m.setHang(rs.getString("hang"));
-				m.setSoGhe(rs.getInt("soGhe"));
+				s.setMaSB(rs.getString("maSB"));
+				s.setTenSB(rs.getString("tenSB"));
+				s.setQuocGia(rs.getString("quocGia"));
 			}
 
 		} catch (Exception e) {
@@ -173,6 +168,7 @@ public class MayBay_Edit {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return m;
+		return s;
 	}
+	
 }
